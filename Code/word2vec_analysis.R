@@ -9,8 +9,8 @@
 #               Dimensional-Data-using-t-SNE
 #           
 # Data Used: Plain text files of Austen's published novels
-# Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, plyr, dplyr,
-#                cluster, stringi
+# Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, ggrepel, plyr, 
+#                dplyr, cluster, stringi
 # Input: folder of plain text files
 # Output: csv files, wordlists, t-SNE plots 
 # Last Updated: 2 September 2016
@@ -36,6 +36,7 @@ library(tsne)
 library(Rtsne)
 library(magrittr) # Not currently used
 library(ggplot2)
+library(ggrepel)
 library(plyr) # Not currently used
 library(dplyr) # Not currently used
 library(cluster) # Not currently used
@@ -86,7 +87,11 @@ ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin",
 # seed - an integer
 # ref_name - the reference name for the exported files - must be in " "
 
-# The function will create a vector which is the average of the words input 
+# The function will create a vector which is the average of the words input and 
+# will output a wordlist of the 500 nearest words, a csv of the words and their
+# positions in the t-SNE plot, and a plot of the 2D reduction of the vector space
+# model using t-SNE. The points for each word are marked in red so the labels 
+# can be moved for ease of reading
 
 w2v_analysis <- function(vsm, words, seed, ref_name) {
         # Set the seed
@@ -121,13 +126,15 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
         write.csv(df, paste0("Results/", ref_name, ".csv"))
         
         # Create t-SNE plot and save as jpeg
-        ggplot(df, aes(x = V1, y = V2, label = rows) ) +
+        ggplot(df) +
+                geom_point(aes(x = V1, y = V2), color = "red") +
+                geom_text_repel(aes(x = V1, y = V2, label = rownames(df))) +
                 xlab("Dimension 1") +
                 ylab("Dimension 2 ") +
-                geom_text(fontface = 2, alpha = .8) +
-                theme() + theme(panel.background = element_rect(colour = "pink")) + 
+                # geom_text(fontface = 2, alpha = .8) +
+                theme_classic(base_size = 12) + 
                 theme(legend.position = "none") +
-                ggtitle(paste0("t-SNE 2D reduction of VSM", ref_name))
+                ggtitle(paste0("2D reduction of VSM ", ref_name, " using t_SNE"))
         
         ggsave(paste0(ref_name, ".jpeg"), path = "Results/Plots", width = 24, 
                height = 18, dpi = 100)
