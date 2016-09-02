@@ -132,7 +132,7 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
                 xlab("Dimension 1") +
                 ylab("Dimension 2 ") +
                 # geom_text(fontface = 2, alpha = .8) +
-                theme_classic(base_size = 12) + 
+                theme_bw(base_size = 12) + 
                 theme(legend.position = "none") +
                 ggtitle(paste0("2D reduction of VSM ", ref_name, " using t_SNE"))
         
@@ -154,7 +154,9 @@ finance <- c("wealth", "property", "inheritance", "fortune")
 marriage <- c("marriage", "wedding")
 personal <- c("thought", "moral", "reason", "opinion", "belief")
 status <- c("status", "rank", "position", "superior", "aristocracy", "gentry")
+dependent <- c("dependent", "dependence")
 
+# Run Analysis
 w2v_analysis(ja, ind, 42, "Independence_Independent")
 
 w2v_analysis(ja, finance, 42, "Finance")
@@ -165,3 +167,4 @@ w2v_analysis(ja, personal, 42, "Personal")
 
 w2v_analysis(ja, status, 42, "Status")
 
+w2v_analysis(ja, dependent, 42, "Dependent")
