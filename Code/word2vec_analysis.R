@@ -22,8 +22,8 @@
 # Load the wordVectors package #
 ################################
 
-library(devtools)
-install_github("bmschmidt/wordVectors") # Check that Xcode license agreed - yes
+# library(devtools)
+# install_github("bmschmidt/wordVectors") # Check that Xcode license agreed - yes
 library(wordVectors)
 
 ##########################################
@@ -64,8 +64,8 @@ library(stringi)
 # window is the number of words either side of the context word, by default
 # the function uses skip-gram this can be changed by including cbow = 1
 
-ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin", 
-                     threads = 3, vectors = 300, window = 15)
+# ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin", 
+#                     threads = 3, vectors = 300, window = 15)
 
 #ja_vec_cbow <- train_word2vec("Results/output.txt", output = 
 #                "Results/ja_cbow.bin", cbow = 1, threads = 3, vectors = 300, 
@@ -75,7 +75,7 @@ ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin",
 # Read in a previously created vector model #
 ############################################
 
-# ja <- read.vectors("Results/ja.bin")
+ja <- read.vectors("Results/ja.bin")
 
 ############################################
 # Create function to analyse and visualise #
@@ -91,7 +91,8 @@ ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin",
 # will output a wordlist of the 500 nearest words, a csv of the words and their
 # positions in the t-SNE plot, and a plot of the 2D reduction of the vector space
 # model using t-SNE. The points for each word are marked in red so the labels 
-# can be moved for ease of reading
+# can be moved for ease of reading.
+# set.seed is used to ensure replicability
 
 w2v_analysis <- function(vsm, words, seed, ref_name) {
         # Set the seed
