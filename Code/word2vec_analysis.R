@@ -80,11 +80,13 @@ ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin",
 # Create function to analyse and visualise #
 ############################################
 
-# The function takes 4 variables:
+# The function takes 4 arguments:
 # vsm - a vector space model 
 # words - a character vector of focus words
 # seed - an integer
 # ref_name - the reference name for the exported files - must be in " "
+
+# The function will create a vector which is the average of the words input 
 
 w2v_analysis <- function(vsm, words, seed, ref_name) {
         # Set the seed
@@ -129,7 +131,6 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
         
         ggsave(paste0(ref_name, ".jpeg"), path = "Results/Plots", width = 24, 
                height = 18, dpi = 100)
-        dev.off()
         
         new_list <- list("Ten nearest" = ten, "Status" = "Analysis Complete") 
         return(new_list)
@@ -147,4 +148,13 @@ marriage <- c("marriage", "wedding")
 personal <- c("thought", "moral", "reason", "opinion", "belief")
 status <- c("status", "rank", "position", "superior", "aristocracy", "gentry")
 
-w2v_analysis(ja, , 42, "")
+w2v_analysis(ja, ind, 42, "Independence_Independent")
+
+w2v_analysis(ja, finance, 42, "Finance")
+
+w2v_analysis(ja, marriage, 42, "Marriage")
+
+w2v_analysis(ja, personal, 42, "Personal")
+
+w2v_analysis(ja, status, 42, "Status")
+
