@@ -48,3 +48,6 @@
 #### This repo has been created by Sara J Kerr a doctoral researcher at Maynooth University.
 #### Website - http://sarajkerr.com
 #### Twitter - @data_fiend
+
+### Acknowledgements
+#### This research has been supported by a John and Pat Hume Scholarship
