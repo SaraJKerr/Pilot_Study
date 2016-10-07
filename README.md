@@ -50,4 +50,4 @@
 #### Twitter - @data_fiend
 
 ### Acknowledgements
-#### This research has been supported by a John and Pat Hume Scholarship
+#### This research is supported by a John and Pat Hume Scholarship, two golden retrievers and a very understanding husband!
