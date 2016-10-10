@@ -3,88 +3,23 @@
 # Date: 1 September 2016
 # Author: Sara J Kerr
 # ORCID:orcid.org/0000-0002-2322-1178
-# Purpose: Word2Vec analysis and visualisation of Jane Austen's Novels
+# Purpose: Word2Vec analysis and visualisation 
 # Based on: https://github.com/bmschmidt/wordVectors/tree/master/R
 #           http://www.codeproject.com/Tips/788739/Visualization-of-High-
 #               Dimensional-Data-using-t-SNE
 #           
-# Data Used: Plain text files of Austen's published novels
-# Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, ggrepel, plyr, 
-#                dplyr, cluster, stringi
+# Data Used: Plain text files 
+# Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, ggrepel
 # Input: folder of plain text files
 # Output: csv files, wordlists, t-SNE plots 
-# Last Updated: 2 September 2016
+# Last Updated: 10 October 2016
 ################################################################################
 
-# Folder structure (1) Main - (2) Texts, Results - (3) Plots
-
-################################
-# Load the wordVectors package #
-################################
-
-# library(devtools)
-# install_github("bmschmidt/wordVectors") # Check that Xcode license agreed - yes
-library(wordVectors)
-
-##########################################
-# Load the additional packages required  #
-##########################################
-
-# If not already installed use install.packages() first
-
-library(tsne)
-library(Rtsne)
-library(magrittr) # Not currently used
-library(ggplot2)
-library(ggrepel)
-library(plyr) # Not currently used
-library(dplyr) # Not currently used
-library(cluster) # Not currently used
-library(stringi)
-
-#########################
-# Prepare the text file #
-#########################
-
-# If a prepared text file has not already been created follow this step - it 
-# takes in a folder of .txt files and outputs a single .txt file which combines
-# the texts in one document removes punctuation and converts all words to lower
-# case.
-
-# prep_word2vec("Texts", "Results/Austen_corpus.txt", lowercase =  T)
-
-# Corpus of Austen novels saved as Austen_corpus.txt in Results folder
-
-###################
-# Train the model #
-###################
-
-# train_word2vec takes several parameters - an input prepared .txt file, an 
-# output file, vectors are the number of dimensions the default is 100, and
-# window is the number of words either side of the context word, by default
-# the function uses skip-gram this can be changed by including cbow = 1
-
-# ja <- train_word2vec("Results/Austen_corpus.txt", output = "Results/ja.bin", 
-#                     threads = 3, vectors = 300, window = 15)
-
-#ja_vec_cbow <- train_word2vec("Results/output.txt", output = 
-#                "Results/ja_cbow.bin", cbow = 1, threads = 3, vectors = 300, 
-#                 window = 15)
-
-#############################################
-# Read in a previously created vector model #
-############################################
-
-ja <- read.vectors("Results/ja.bin")
-
-############################################
-# Create function to analyse and visualise #
-############################################
-
-# The function takes 4 arguments:
+# The function takes 5 arguments:
 # vsm - a vector space model 
 # words - a character vector of focus words
 # seed - an integer
+# path - the path to the folder you want to save your results in
 # ref_name - the reference name for the exported files - must be in " "
 
 # The function will create a vector which is the average of the words input and 
@@ -94,11 +29,11 @@ ja <- read.vectors("Results/ja.bin")
 # can be moved for ease of reading.
 # set.seed is used to ensure replicability
 
-w2v_analysis <- function(vsm, words, seed, ref_name) {
+w2v_analysis <- function(vsm, words, seed, path, ref_name) {
         # Set the seed
         if (!missing(seed))
                 set.seed(seed)
-     
+        
         # Identify the nearest 10 words to the average vector of search terms
         ten <- nearest_to(vsm, vsm[[words]])
         
@@ -106,8 +41,9 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
         # save as a .txt file
         main <- nearest_to(vsm, vsm[[words]], 500)
         wordlist <- names(main)
-        filepath <- paste0("Results/", ref_name)
-        write(wordlist, paste0("Results/", ref_name, ".txt"))
+        filepath <- paste0(path, ref_name)
+        write(wordlist, paste0(filepath, ".txt"))
+        
         
         # Create a subset vector space model
         new_model <- vsm[[wordlist, average = F]]
@@ -124,7 +60,7 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
         rownames(df) <- rows
         
         # Save dataframe as .csv file
-        write.csv(df, paste0("Results/", ref_name, ".csv"))
+        write.csv(df, paste0(filepath, ".csv"))
         
         # Create t-SNE plot and save as jpeg
         ggplot(df) +
@@ -137,7 +73,7 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
                 theme(legend.position = "none") +
                 ggtitle(paste0("2D reduction of VSM ", ref_name, " using t_SNE"))
         
-        ggsave(paste0(ref_name, ".jpeg"), path = "Results/Plots", width = 24, 
+        ggsave(paste0(ref_name, ".jpeg"), path = path, width = 24, 
                height = 18, dpi = 100)
         
         new_list <- list("Ten nearest" = ten, "Status" = "Analysis Complete") 
@@ -145,27 +81,4 @@ w2v_analysis <- function(vsm, words, seed, ref_name) {
         
 }
 
-######################################
-# Explore target words and visualise #
-######################################
 
-# Create search terms:
-ind <- c("independence", "independent")
-finance <- c("wealth", "property", "inheritance", "fortune")
-marriage <- c("marriage", "wedding")
-personal <- c("thought", "moral", "reason", "opinion", "belief")
-status <- c("status", "rank", "position", "superior", "aristocracy", "gentry")
-dependent <- c("dependent", "dependence")
-
-# Run Analysis
-w2v_analysis(ja, ind, 42, "Independence_Independent")
-
-w2v_analysis(ja, finance, 42, "Finance")
-
-w2v_analysis(ja, marriage, 42, "Marriage")
-
-w2v_analysis(ja, personal, 42, "Personal")
-
-w2v_analysis(ja, status, 42, "Status")
-
-w2v_analysis(ja, dependent, 42, "Dependent")
