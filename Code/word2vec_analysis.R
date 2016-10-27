@@ -8,11 +8,11 @@
 #           http://www.codeproject.com/Tips/788739/Visualization-of-High-
 #               Dimensional-Data-using-t-SNE
 #           
-# Data Used: Plain text files 
+# Data Used: Vector space model 
 # Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, ggrepel
-# Input: folder of plain text files
+# Input: Vector space model
 # Output: csv files, wordlists, t-SNE plots 
-# Last Updated: 10 October 2016
+# Last Updated: 27 October 2016
 ################################################################################
 
 # The function takes 5 arguments:
