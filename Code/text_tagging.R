@@ -6,7 +6,7 @@
 # Purpose: To read in a plain text file, tag it for parts of speech, and extract 
 # the information from the tagged file
 # Based on: https://cran.r-project.org/web/packages/koRpus/vignettes/koRpus_vignette.pdf
-# Data Used: Austen_1814_MP.txt
+# Data Used: texts in plain text format
 # Stoplist: none 
 # Packages Used: korPus
 # Input: plain text file
@@ -32,9 +32,10 @@
 # install.packages(koRpus)
 library(koRpus)
 
+filename <- list.files("Data/Texts/", pattern="*.txt")
 
 # Read in text and apply POS tagger
-text_tagged <- treetag("PhD_Pilot/Data/Plain_Texts/Edgeworth_1814_P.txt", 
+text_tagged <- treetag(paste0("Data/Texts/", filename[]),
                        treetagger="manual", lang="en", 
                        TT.options=list(path="TreeTagger", preset="en"))
 
@@ -66,7 +67,7 @@ nouns <- rbind(single_nouns, plural_nouns)
 nouns <- nouns$token
 
 # Save noun file as plain text
-write(nouns, file = "PhD_Pilot/Data/Tagged_Texts/Edgeworth_1814_P_nouns.txt")
+write(nouns, file = paste0("Data/Tagged/", filename[]))
 
 # Extract proper nouns
 proper_single_nouns <- subset(tagged_doc, tag == "NP")
@@ -75,6 +76,6 @@ proper_nouns <- rbind(proper_single_nouns, proper_plural_nouns)
 proper_nouns <- proper_nouns$token
 
 # Save proper noun file as plain text
-write(proper_nouns, file = "PhD_Pilot/Data/Tagged_Texts/Edgeworth_1814_P_proper_nouns.txt")
+write(proper_nouns, file = paste0("Data/Proper_Nouns/", filename[]))
 
 

@@ -9,7 +9,7 @@
 #               Dimensional-Data-using-t-SNE
 #           
 # Data Used: Vector space model 
-# Packages Used: wordVectors, tsne, Rtsne, magrittr, ggplot2, ggrepel
+# Packages Used: wordVectors, tsne, Rtsne, ggplot2, ggrepel
 # Input: Vector space model
 # Output: csv files, wordlists, t-SNE plots 
 # Last Updated: 27 October 2016

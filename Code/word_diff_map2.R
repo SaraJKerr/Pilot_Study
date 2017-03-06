@@ -17,10 +17,15 @@
 #####################################
 ## Reading in and Processing Texts ##
 #####################################
+# Set working directory where files are
+setwd("~/PhD_Main/Pilot/Pilot_Study/Data/Texts")
+
+# Get list of pathways to .txt files
+filenames <- list.files(getwd(),pattern="*.txt")
 
 # Read in texts - need to be in same folder
-text_1 <- readLines('Data/Plain_Texts/Austen_1814_MP.txt')
-text_2 <- readLines('Data/Plain_Texts/Edgeworth_1814_P.txt')
+text_1 <- lapply(filenames[1:6],readLines)
+text_2 <- lapply(filenames[7:12],readLines)
 
 # Load tm package
 require(tm)
@@ -40,8 +45,8 @@ text_1c <- tm_map(text_1c, removeNumbers)
 
 text2_c <- tm_map(text2_c, stripWhitespace)
 text2_c <- tm_map(text2_c, content_transformer(tolower))
-#text2_c <- tm_map(text2_c, removeWords, stopwords("english")) # Remove 1st # to activate
-#text2_c <- tm_map(text2_c, stemDocument) # Remove 1st # to activate
+text2_c <- tm_map(text2_c, removeWords, stopwords("english")) # Remove 1st # to activate
+text2_c <- tm_map(text2_c, stemDocument) # Remove 1st # to activate
 text2_c <- tm_map(text2_c, removePunctuation)
 text2_c <- tm_map(text2_c, removeNumbers)
 
